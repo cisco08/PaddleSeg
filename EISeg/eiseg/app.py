@@ -1204,7 +1204,7 @@ class APP_EISeg(QMainWindow, Ui_EISeg):
             if not labelPath:
                 return
 
-            labels = json.loads(open(labelPath, "r").read())
+            labels = json.loads(open(labelPath, "r", encoding='utf-8').read())
 
             for label in labels:
                 color = label["color"]
@@ -1446,7 +1446,7 @@ class APP_EISeg(QMainWindow, Ui_EISeg):
                 jsonPath = savePath + ".json"
             else:
                 jsonPath = osp.splitext(savePath)[0] + ".json"
-            open(jsonPath, "w", encoding="utf-8").write(json.dumps(labels))
+            open(jsonPath, "w", encoding="utf-8").write(json.dumps(labels, ensure_ascii=False))
             self.labelPaths.append(jsonPath)
 
         # 4.5 保存coco
@@ -1478,7 +1478,7 @@ class APP_EISeg(QMainWindow, Ui_EISeg):
             cocoPath = osp.join(saveDir, "annotations.json")
             open(
                 cocoPath, "w",
-                encoding="utf-8").write(json.dumps(self.coco.dataset))
+                encoding="utf-8").write(json.dumps(self.coco.dataset, ensure_ascii=False))
 
         self.setDirty(False)
         self.statusbar.showMessage(self.tr("标签成功保存至") + " " + savePath, 5000)
